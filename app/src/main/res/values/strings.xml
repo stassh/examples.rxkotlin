@@ -6,4 +6,10 @@
     <string name="option_fragment_text">Hello option fragment</string>
     <string name="menu_option_item">Option</string>
     <string name="menu_fragment_item">Fragment</string>
+    <string name="title_activity_main2">MainActivity2</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_settings">Settings</string>
 </resources>
