@@ -9,11 +9,24 @@ import android.support.v4.widget.DrawerLayout
 import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.EditText
+import android.widget.TextView
+import com.jakewharton.rxbinding2.widget.RxTextView
+import com.jakewharton.rxbinding2.widget.TextViewTextChangeEvent
 import com.sshabalin.sudoku.R
+import io.reactivex.android.schedulers.AndroidSchedulers
+import java.util.concurrent.TimeUnit
+import io.reactivex.Observer
+import io.reactivex.rxkotlin.subscribeBy
+
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
+
+    //private lateinit var _subscription: Subscription
+    private lateinit var _inputText: EditText
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,6 +48,20 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         val navigationView = findViewById(R.id.nav_view) as NavigationView
         navigationView.setNavigationItemSelectedListener(this)
+
+
+        val _inputText = findViewById(R.id.editText) as EditText
+        val outText = findViewById(R.id.textView2) as TextView
+
+        RxTextView.textChangeEvents(_inputText)
+                .debounce(400, TimeUnit.MILLISECONDS)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeBy(
+                        onNext = {outText.text = _inputText.text},
+                        onError = {},
+                        onComplete = {}
+
+                )
     }
 
     override fun onBackPressed() {
@@ -82,4 +109,5 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         drawer.closeDrawer(GravityCompat.START)
         return true
     }
+
 }
